@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define N 10
 #include <stdlib.h>
-#include <time.h>
+//Prototipos
 void Imprime(int A[N]);
 void Burbuja(int A[N]);
 int Intercambio(int* Num, int* Num2);
