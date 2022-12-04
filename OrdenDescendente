@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+#define MAX 100
+
+int main()
+{
+    return(0);
+}
+
+void OrdenDescendente(int arreglo[MAX])
+{
+    int intercambios = 1;
+    for(int i = 0; i < MAX -1;i++)
+    {
+        intercambios = 0;
+        for(int actual = 0; actual <MAX - 1 - i; actual++)
+        {
+            if(arreglo[actual] > arreglo[actual + 1])
+            {
+                intercambios = 1;
+                swap(&arreglo[actual], &arreglo[actual + 1]);
+            }
+        }
+    }
+}
+int swap(int *num,int *num2)
+{
+    int temp;
+    temp = *num;
+    *num = *num2;
+    *num2 = temp;
+}
