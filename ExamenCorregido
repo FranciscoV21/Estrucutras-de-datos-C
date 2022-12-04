@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 100
+
+//PROTOTIPOS
+struct cancion{
+    int codigo;
+    char nombre[50];
+    char album[50];
+    int noInterpretes;
+    char interpretes[5][50];
+    int reproducciones;
+};
+void captura(struct cancion *c);
+void capturaArreglo(struct cancion arreglo[MAX], int *noCanciones);
+int buscaMasReproducida(struct cancion arreglo[MAX], int noCanciones);
+
+int main()
+{
+    struct cancion listaSpotify[MAX];
+
+    int noCanciones;
+    int posMaxReproducciones;
+
+    capturaArreglo(listaSpotify, noCanciones);
+    posMaxReproducciones =buscaMasReproducida(listaSpotify, noCanciones);
+
+    printf("La cancion mas reproducida fue: ");
+    printf("Codigo %d\n", listaSpotify[posMaxReproducciones].codigo);
+    printf("Nombre %s\n", listaSpotify[posMaxReproducciones].nombre);
+    printf("Album %s\n", listaSpotify[posMaxReproducciones].album);
+    printf("Numero de interpretes %d\n", listaSpotify[posMaxReproducciones].noInterpretes);
+
+    for(int i = 0; i < listaSpotify[posMaxReproducciones].noInterpretes;i++)
+    {
+        printf("Interpretes %d: %s\n", i=1, listaSpotify[posMaxReproducciones].interpretes[i]);
+    }
+    printf("Reproducciones %d\n", listaSpotify[posMaxReproducciones].reproducciones);
+    return(0);
+}
+void captura(struct cancion *c)
+{
+    printf("Codigo de la cancion: ");
+    scanf("%d",&c->codigo);
+    printf("Nombre del artista: ");
+    scanf("%s",c->nombre);
+    printf("Nombre del album: ");
+    scanf("%s",c->album);
+    printf("Numero de interpretes: ");
+    scanf("%d",&c->noInterpretes);
+    for(int i=0;i<c->noInterpretes;i++)
+    {
+        printf("Nombres de interpretes %d: ",i+1);
+        scanf("%s",c->interpretes[i]);
+    }
+
+    printf("Numero de reproducciones: ");
+    scanf("%d",&c->reproducciones);
+}
+
+void capturaArreglo(struct cancion arreglo[MAX], int *noCanciones)
+{
+    //int noCanciones;
+    printf("Cuantas canciones vaz a capturar? ");
+    scanf("%d",noCanciones);
+
+    for(int i=0;i< noCanciones;i++)
+    {
+        printf("Datos de la cancion %d: /n",i+1);
+        captura(&arreglo[i]);
+    }
+}
+int buscaMasReproducida(struct cancion arreglo[MAX], int noCanciones)
+{
+    int maxReproducciones = 0;
+    int posMax = -1;
+
+    for(int i=0;i < noCanciones;i++)
+    {
+        if(arreglo[i].reproducciones < maxReproducciones)
+        {
+            maxReproducciones = arreglo[i].reproducciones;
+            posMax = i;
+        }
+        if(arreglo[i].reproducciones > arreglo[posMax].reproducciones)
+
+        {
+            posMax = 1;
+        }
+    }
+    return(posMax);
+}
