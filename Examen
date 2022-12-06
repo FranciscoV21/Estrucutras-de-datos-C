@@ -1,0 +1,117 @@
+#include <stdio.h>
+#define N 20
+#include <stdlib.h>
+typedef struct
+{
+	int clave;
+	float cal[3];
+	char nombre[30];
+}TAlumno;
+typedef struct
+{
+    TAlumno Pila[N];
+    int tope;
+    int tam;
+}TPila;
+void GeneraArchivo();
+void Inicio_Pila(TPila *p, int tam);
+int Pila_vacia(TPila p);
+int Pila_llena(TPila p);
+int Push(TPila *p, TAlumno a);
+int Pop(TPila *p, TAlumno *a);
+void Guarda(TPila p);
+
+int main()
+{
+	TAlumno A[N];
+	int num;
+	TPila p;
+	
+	GeneraArchivo(A, &p);
+	Guarda(p);
+}
+void Guarda(TPila p)
+{
+	FILE *txt;
+	TAlumno a;
+	float prom;
+	txt=fopen("Calificaciones.txt", "w");
+	
+	while(!Pila_vacia(p)){
+		if(Pop(&p, &a)){
+			prom=(a.cal[0]+a.cal[1]+a.cal[2])/3;
+			fprintf(txt, "%s %f", a.nombre, prom);	
+		}
+	}
+	fclose(txt);
+}
+void GeneraArchivo(TAlumno L[N], TPila *p)
+{
+	FILE *bin;
+	int i, cont, condi;
+	float cal[N];
+		
+	bin=fopen("Alumnos.dat", "rb");
+	if(bin==NULL){
+		printf("No existe el archivo \n");
+		return;
+	}
+	while(!feof(bin)){	
+		fread(&L[i], sizeof(TAlumno), 1, bin);
+	 	i++;
+	}
+	Inicio_Pila(p, i);
+	for(cont=0; cont < i; cont++){
+		condi=Push(p, L[cont]);
+	}	
+	fclose(bin);
+}
+void Inicio_Pila(TPila *p, int tam)
+{
+    p -> tam = tam <= N? tam:N;
+    p -> tope = 0;
+}
+
+int Pila_vacia(TPila p)
+{
+    int reg = 1;
+    if(p.tope > 0)
+    {
+        reg = 0;
+    }
+    return(reg);
+}
+
+int Pila_llena(TPila p)
+{
+    int reg = 1;
+    if(p.tope < p.tam)
+    {
+        reg = 0;
+    }
+    return(reg);
+}
+
+int Push(TPila *p, TAlumno a)
+{
+    int reg = 0;
+    if(!Pila_llena(*p))
+    {
+        p -> Pila[p -> tope] = a;
+        p -> tope+=1;
+        reg = 1;
+    }
+    return(reg);
+}
+
+int Pop(TPila *p, TAlumno *a)
+{
+    int reg = 0;
+    if(!Pila_vacia(*p))
+    {
+        p -> tope-=1;
+        *a = p -> Pila[p -> tope];
+        reg = 1;
+    }
+    return(reg);
+}
